@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5">
+    <h3>Tem certeza de que deseja excluir o produto "{{ produto.nome }}"?</h3>
+    <p>Essa ação não poderá ser desfeita.</p>
+    <form method="POST">
+        {{ form.csrf_token }} <!-- Adiciona o token CSRF -->
+        <button type="submit" class="btn btn-danger">Excluir</button>
+        <a href="{{ url_for('estoque_lista') }}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+{% endblock %}

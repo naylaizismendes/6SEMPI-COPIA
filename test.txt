@@ -1,0 +1,42 @@
+@app.route('/update/')
+def editar:
+
+
+
+class Fornecedor(db.Model) 
+    =_
+
+class Categoria(db.Model)
+
+
+
+from app.routes import produtoDetail
+
+
+@app.route('/produto/<int:id>/', methods=["GET", "POST"])
+def produtoDetail(id):
+    obj = Produto.query.get(id)  # Recupera o objeto pelo ID
+    
+    if not obj:
+        flash('Produto não encontrado!', 'error')
+        return redirect(url_for('estoque_lista'))
+
+    form = ProdutoForm()  # Cria o formulário
+
+    if request.method == 'POST' and form.validate_on_submit():
+        # Atualiza os dados com base no formulário
+        obj.nome = form.nome.data
+        obj.quantidade = form.quantidade.data
+        obj.categoria = form.categoria.data
+        obj.fornecedor = form.fornecedor.data
+        obj.descricao = form.descricao.data
+        obj.data_de_fabricacao = form.data_de_fabricacao.data
+        obj.data_de_validade = form.data_de_validade.data
+    
+        db.session.commit()
+
+
+        flash('Produto atualizado com sucesso!', 'success')
+        return redirect(url_for("estoque_lista"))
+   #vizualizar
+    return render_template('produto_detail.html', form=form, obj=obj)

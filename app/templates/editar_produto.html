@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container">
+  {% include 'nav.html' %}
+  <h2>Editar Produto</h2>
+  <form method="POST">
+    <input type="text" name="nome" value="{{ produto.nome }}" placeholder="Nome" required>
+    <input type="number" name="quantidade" value="{{ produto.quantidade }}" placeholder="Quantidade" required>
+    <input type="text" name="categoria" value="{{ produto.categoria }}" placeholder="Categoria" required>
+    <input type="text" name="fornecedor" value="{{ produto.fornecedor }}" placeholder="Fornecedor">
+    <textarea name="descricao" placeholder="Descrição">{{ produto.descricao }}</textarea>
+    <input type="date" name="data_de_fabricacao" value="{{ produto.data_de_fabricacao.strftime('%Y-%m-%d') }}">
+    <input type="date" name="data_de_validade" value="{{ produto.data_de_validade.strftime('%Y-%m-%d') }}">
+    <button type="submit" class="btn btn-primary">Atualizar</button>
+    <a href="{{ url_for('detalhes_produto', id=produto.id) }}" class="btn btn-secondary">Cancelar</a>
+  </form>
+</div>
+
+{% endblock %}
+
+

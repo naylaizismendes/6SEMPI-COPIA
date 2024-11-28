@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container">
+  {% include 'nav.html' %}
+  <h2>Detalhes do Produto</h2>
+  <p><strong>Nome:</strong> {{ produto.nome }}</p>
+  <p><strong>Quantidade:</strong> {{ produto.quantidade }}</p>
+  <p><strong>Categoria:</strong> {{ produto.categoria }}</p>
+  <p><strong>Fornecedor:</strong> {{ produto.fornecedor }}</p>
+  <p><strong>Descrição:</strong> {{ produto.descricao }}</p>
+  <p><strong>Data de Fabricação:</strong> {{ produto.data_de_fabricacao.strftime('%d/%m/%Y') }}</p>
+  <p><strong>Data de Validade:</strong> {{ produto.data_de_validade.strftime('%d/%m/%Y') }}</p>
+  <a href="{{ url_for('editar_produto', id=produto.id) }}" class="btn btn-primary">Editar</a>
+  <a href="{{ url_for('estoque_lista') }}" class="btn btn-secondary">Voltar</a>
+</div>
+
+{% endblock %}

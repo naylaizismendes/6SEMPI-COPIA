@@ -1,0 +1,9 @@
+login de user
+
+1.configuração app
+2.criar models de usuario
+3.criar formulaarios de cadastro de usuario
+4. criar view para login
+5. criar formulario de login
+6. criar  viwe para login
+7.criar view para logut

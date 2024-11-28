@@ -1,0 +1,57 @@
+{%extends "base.html"%}
+{%block content%}
+<div class="container">
+{%include 'nav.html'%}
+
+<div class="row">
+
+    <div class="col-md-6">
+        Nome: 
+        <input type="text" value="{{obj.nome}}" class="form-control" bg-secodary text-white readonly>
+
+    </div>
+
+
+    <div class="col-md-6">
+        quantidade: 
+        <input type="text" value="{{obj.quantidade}}" class="form-control" bg-secodary text-white readonly>
+
+    </div>
+
+    <div class="col-md-6">
+        categoria: 
+        <input type="text" value="{{obj.categoria}}" class="form-control" bg-secodary text-white readonly>
+
+    </div>
+
+    <div class="col-md-6">
+        fornecedor: 
+        <input type="text" value="{{obj. fornecedor}}" class="form-control" bg-secodary text-white readonly>
+
+    </div>
+
+    <div class="col-md-6">
+        descricao: 
+        <input type="text" value="{{obj.descricao}}" class="form-control" bg-secodary text-white readonly>
+
+    </div>
+
+    <div class="col-md-6">
+        data_de_fabricacao: 
+        <input type="text" value="{{obj.data_de_fabricacao}}" class="form-control" bg-secodary text-white readonly>
+
+    </div>
+
+
+    <div class="col-12 mt-4">
+        data_de_validade: 
+        <input type="text" value="{{obj. data_de_validade}}" class="form-control" bg-secodary text-white readonly>
+
+    </div>
+</div>
+
+
+</div>
+
+
+{%endblock%}

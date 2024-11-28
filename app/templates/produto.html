@@ -1,0 +1,33 @@
+
+{%extends "base.html"%}
+{%block content%}
+<div class="row">
+    <h1>Cadastro de Produto</h1>   
+    <form action="" method="post" class="row mt-4 p-4 roude border shadow">
+        {{form.csrf_token}}
+        {{form.nome.label()}}
+        {{form.nome()}}
+
+        {{form.quantidade.label()}}
+        {{form.quantidade(class="form-control")}}
+
+        {{ form.categoria.label }}
+        {{ form.categoria(class="form-control") }}
+
+        {{form.fornecedor.label()}}
+        {{form.fornecedor(class="form-control")}}
+
+        {{form.descricao.label()}}
+        {{form.descricao(class="form-control")}}
+
+        {{form.data_de_fabricacao.label()}}
+        {{form.data_de_fabricacao(class="form-control")}}
+
+        {{form.data_de_validade.label()}}
+        {{form.data_de_validade(class="form-control")}}
+
+        {{form. btnSubmit(class="btn btn-primary col-12 mt-3")}}
+<!-- adicionando nivel de segurança-->
+    </form>
+</div>
+{%endblock%}

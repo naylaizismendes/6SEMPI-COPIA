@@ -1,0 +1,64 @@
+
+{%extends "base.html"%}
+{%block content%}
+
+<div class="container">
+    <div class="row mt-4">
+    <h3> ESTOQUE</h3>
+  <form method="get" class="row">
+ <div class = "col-9">
+    <input type="text" name="pesquisa" class="form-control">
+
+ </div>
+ <div class="col-12">
+    <button type="submit" class="btn btn-primary">Pesquisar</button>
+
+ </div>
+  </form>
+        <div class="col-12">
+            <table class="table">
+                    <thead>
+                        <tr>
+                          <th>nome</th>  
+                          <th>quantidade</th>  
+                          <th>categoria</th>  
+                          <th> fornecedor</th> 
+                          <th> descricao</th>   
+                          <th>data_de_fabricaca</th> 
+                          <th> data_de_validade </th> 
+                            
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {%for linha in context['dados']%}
+                        <tr>
+                            <td>{{linha.nome}}</td>
+                            <td>{{linha.quantidade}}</td>
+                            <td>{{linha.categoria}}</td>
+                            <td>{{linha.fornecedor}}</td>
+                            <td>{{linha.descricao}}</td>
+                            <td>{{linha.data_de_fabricacao}}</td>
+                            <td>{{linha.data_de_validade}}</td>
+                        
+                            <td>
+                                <a href="{{ url_for('editar_produto', id=linha.id) }}" class="btn btn-warning btn-sm">Editar</a>
+                                <a href="{{ url_for('detalhes_vizualizar_produto', id=linha.id) }}" class="btn btn-info btn-sm">Detalhes</a>
+                                <a href="{{ url_for('deletarproduto', id=linha.id) }}" class="btn btn-info btn-sm">Deletar</a>
+
+                            </td>
+                            
+                
+                        </tr>
+                         {%endfor%}
+                    </tbody>
+
+            </table>
+
+        
+        </div>
+    </div>
+
+</div>
+
+{%endblock%}

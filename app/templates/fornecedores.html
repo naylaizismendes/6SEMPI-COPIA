@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Lista de Fornecedores</h1>
+
+<!-- Formulário de Pesquisa -->
+<form method="GET" action="{{ url_for('fornecedora_lista') }}">
+    <input type="text" name="pesquisa" value="{{ pesquisa }}" placeholder="Pesquisar fornecedor">
+    <button type="submit">Pesquisar</button>
+</form>
+
+
+
+<!-- Tabela de Fornecedores -->
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Nome</th>
+            <th>Telefone</th>
+            <th>Email</th>
+            <th>Ramo</th>
+            <th>CNPJ</th>
+            <th>Endereço</th>
+            <th>Cidade</th>
+            <th>Mensagem</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for fornecedor in fornecedores %}
+        <tr>
+            <td>{{ fornecedor.nome }}</td>
+            <td>{{ fornecedor.telefone }}</td>
+            <td>{{ fornecedor.email }}</td>
+            <td>{{ fornecedor.ramo }}</td>
+            <td>{{ fornecedor.cnpj }}</td>
+            <td>{{ fornecedor.endereco }}</td>
+            <td>{{ fornecedor.cidade }}</td>
+            <td>{{ fornecedor.mensagem }}</td>
+        </tr>
+        {% else %}
+        <tr>
+            <td colspan="8">Nenhum fornecedor encontrado.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

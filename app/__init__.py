@@ -41,7 +41,10 @@ from app.routes import  deletarproduto
 from app.routes import detalhes_vizualizar_produto
 from app.routes import  editar_produto
 from app.routes import  fornecedora_nova
-from app.routes import  fornecedora_nova
+from app.routes import fornecedora_lista
+from app.routes import editar_fornecedora
+from app.routes import vizualizar_fornecedora
+from app.routes import deletar_fornecedora
 # tela principal(MENU) 
 from app.models import Produto
 from app.models import User

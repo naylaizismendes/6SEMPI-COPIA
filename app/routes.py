@@ -213,6 +213,59 @@ def fornecedora_lista():
         
     return render_template('fornecedores.html', pesquisa=pesquisa, fornecedores=dados)
 
+
+#crud 
+#editar 
+@app.route('/fornecedora/<int:id>/editar/', methods=["GET", "POST"])
+def editar_fornecedora(id):
+    fornecedora = Fornecedora.query.get(id)  # Corrigido: usar a classe fornecedora com "P" maiúsculo
+    
+    if not fornecedora:
+        flash('fornecedora não encontrado!', 'error')
+        return redirect(url_for('fornecedora_lista'))  # Redireciona para a lista de estoque se o fornecedora não for encontrado
+
+    if request.method == 'POST':
+        fornecedora.nome = request.form.get('nome', fornecedora.nome)
+        fornecedora.telefone = request.form.get('telefone', fornecedora.telefone)
+        fornecedora.email = request.form.get('email', fornecedora.email)
+        fornecedora.ramo= request.form.get('ramo', fornecedora.ramo)
+        fornecedora. cnpj = request.form.get(' cnpj', fornecedora. cnpj)
+        fornecedora. endereco = request.form.get(' endereco', fornecedora. endereco)
+        fornecedora.cidade = request.form.get('cidade', fornecedora.cidade)
+        fornecedora.mensage = request.form.get('mensage', fornecedora.mensage)
+    
+
+        db.session.commit()
+        flash('Fornecedora atualizado com sucesso!', 'success')
+        return redirect(url_for('fornecedora_lista'))  # Redireciona para a lista de produtos após salvar
+
+   
+    return render_template('editar_fornecedora.html' )
+#vizualizar
+@app.route('fornecedora/<int:id>/detalhes/', methods=["GET"])
+@app.route('/fornecedora/<int:id>/detalhes/', methods=["GET"])
+def vizualizar_fornecedora(id):
+    fornecedora = Fornecedora.query.get(id)
+    if not fornecedora:
+        flash("Fornecedor não encontrado!", "error")
+        return redirect(url_for('fornecedora_lista'))
+    
+    return render_template('vizualizar_fornecedora.html', fornecedora=fornecedora)
+
+
+#deletar
+@app.route('/fornecedora/<int:id>/delete', methods=['GET', 'POST'])
+def deletar_fornecedora(id):
+    fornecedora = Fornecedora.query.get_or_404(id)
+    form = DeleteForm()
+
+    if request.method == 'POST':
+        db.session.delete(fornecedora)
+        db.session.commit()
+        flash('Produto deletado com sucesso!', 'success')
+        return redirect(url_for('fornecedora_lista'))
+
+    return render_template('deletar_fornecedora.html')
 #aqui estamos enviando email  a fornecedora solicitando produto 
 
 
@@ -222,3 +275,4 @@ def fornecedora_lista():
 
 
 # controle de estoque por quantidade 
+

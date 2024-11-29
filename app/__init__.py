@@ -39,7 +39,6 @@ app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD')
 mail=Mail(app)
 
 
-db.init_app(app)
     
 #rotas 
 from app.routes import homepage 
@@ -57,7 +56,7 @@ from app.routes import editar_fornecedora
 from app.routes import vizualizar_fornecedora
 from app.routes import deletar_fornecedora
 from app.routes import solicitar_compra
-from .routes import main_bp
+
 # tela principal(MENU) 
 from app.models import Produto
 from app.models import User

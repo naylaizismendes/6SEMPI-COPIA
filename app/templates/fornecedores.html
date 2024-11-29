@@ -4,12 +4,11 @@
 <h1>Lista de Fornecedores</h1>
 
 <!-- Formulário de Pesquisa -->
-<form method="GET" action="{{ url_for('fornecedora_lista') }}">
-
+<form method="GET" action="{{ url_for('fornecedora_lista') }}" class="row g-3">
     <input type="text" name="pesquisa" value="{{ pesquisa }}" placeholder="Pesquisar fornecedor">
-    <button type="submit">Pesquisar</button>
-    <a href="{{ url_for('fornecedora_nova') }}" class="btn btn-warning btn-sm">Adicionar</a>
+    <button type="submit" class="btn btn-primary btn-sm">Pesquisar</button>
 </form>
+<a href="{{ url_for('fornecedora_nova') }}" class="btn btn-warning btn-sm mt-2">Adicionar</a>
 
 
 
@@ -45,7 +44,7 @@
                 <a href="{{ url_for('editar_fornecedora', id=fornecedor.id) }}" class="btn btn-warning btn-sm">Editar</a>
                 <a href="{{ url_for('vizualizar_fornecedora', id=fornecedor.id) }}" class="btn btn-info btn-sm">Detalhes</a>
                 <a href="{{ url_for('deletar_fornecedora', id=fornecedor.id) }}" class="btn btn-info btn-sm">Deletar</a>
-
+                <a href="{{ url_for('solicitar_compra', id=fornecedor.id) }}" class="btn btn-success btn-sm">Enviar E-mail</a>
             </td>
             
         

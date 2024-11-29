@@ -301,6 +301,7 @@ def solicitar_compra(id):
         mail.send(msg)   
         flash('Mensagem enviada com sucesso!')
     return redirect('/')  
+    
         #aqui e a parte de gerar relatorios( .pdf )
 
 #aqui e o home - com gráficos de analise 

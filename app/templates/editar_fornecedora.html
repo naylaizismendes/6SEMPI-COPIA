@@ -1,74 +1,50 @@
-{%extends "base.html"%}
-{%block content%}
+{% extends "base.html" %}
+{% block content %}
 <div class="container">
-{%include 'nav.html'%}
+    {% include 'nav.html' %}
 
-<div class="row">
+    <div class="row">
 
-    <div class="col-md-6">
-        Nome: 
-        <input type="text" value="{{obj.nome}}" class="form-control" bg-secodary text-white readonly>
+        <div class="col-md-6">
+            Nome:
+            <input type="text" value="{{ obj.nome }}" class="form-control bg-secondary text-white" readonly>
+        </div>
 
-    </div>
+        <div class="col-md-6">
+            Telefone:
+            <input type="text" value="{{ obj.telefone }}" class="form-control bg-secondary text-white" readonly>
+        </div>
 
+        <div class="col-md-6">
+            Email:
+            <input type="text" value="{{ obj.email }}" class="form-control bg-secondary text-white" readonly>
+        </div>
 
-    <div class="col-md-6">
-        quantidade: 
-        <input type="text" value="{{obj.quantidade}}" class="form-control" bg-secodary text-white readonly>
+        <div class="col-md-6">
+            Ramo:
+            <input type="text" value="{{ obj.ramo }}" class="form-control bg-secondary text-white" readonly>
+        </div>
 
-    </div>
+        <div class="col-md-6">
+            CNPJ:
+            <input type="text" value="{{ obj.cnpj }}" class="form-control bg-secondary text-white" readonly>
+        </div>
 
-    <div class="col-md-6">
-        telefone: 
-        <input type="text" value="{{obj.telefone}}" class="form-control" bg-secodary text-white readonly>
+        <div class="col-12 mt-4">
+            Endereço:
+            <input type="text" value="{{ obj.endereco }}" class="form-control bg-secondary text-white" readonly>
+        </div>
 
-    </div>
+        <div class="col-12 mt-4">
+            Cidade:
+            <input type="text" value="{{ obj.cidade }}" class="form-control bg-secondary text-white" readonly>
+        </div>
 
-    <div class="col-md-6">
-        email: 
-        <input type="text" value="{{obj. email}}" class="form-control" bg-secodary text-white readonly>
-
-    </div>
-
-    <div class="col-md-6">
-         ramo: 
-        <input type="text" value="{{obj. ramo}}" class="form-control" bg-secodary text-white readonly>
-
-    </div>
-
-    <div class="col-md-6">
-        cnpj: 
-        <input type="text" value="{{obj.cnpj}}" class="form-control" bg-secodary text-white readonly>
-
-    </div>
-
-
-    <div class="col-12 mt-4">
-        endereco: 
-        <input type="text" value="{{obj. endereco}}" class="form-control" bg-secodary text-white readonly>
+        <div class="col-12 mt-4">
+            Mensagem:
+            <input type="text" value="{{ obj.mensagem }}" class="form-control bg-secondary text-white" readonly>
+        </div>
 
     </div>
-    <div class="col-12 mt-4">
-        endereco: 
-        <input type="text" value="{{obj. endereco}}" class="form-control" bg-secodary text-white readonly>
-
-    </div>
-    <div class="col-12 mt-4">
-        cidade: 
-        <input type="text" value="{{obj. cidade}}" class="form-control" bg-secodary text-white readonly>
-
-    </div>
-
-    <div class="col-12 mt-4">
-        mensagem: 
-        <input type="text" value="{{obj. mensagem}}" class="form-control" bg-secodary text-white readonly>
-
-    </div>
-
 </div>
-
-
-</div>
-
-
-{%endblock%}
+{% endblock %}

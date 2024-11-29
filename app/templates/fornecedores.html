@@ -5,14 +5,17 @@
 
 <!-- Formulário de Pesquisa -->
 <form method="GET" action="{{ url_for('fornecedora_lista') }}">
+
     <input type="text" name="pesquisa" value="{{ pesquisa }}" placeholder="Pesquisar fornecedor">
     <button type="submit">Pesquisar</button>
+    <a href="{{ url_for('fornecedora_nova') }}" class="btn btn-warning btn-sm">Adicionar</a>
 </form>
 
 
 
-<!-- Tabela de Fornecedores -->
+
 <table class="table table-striped">
+
     <thead>
         <tr>
             <th>Nome</th>
@@ -36,7 +39,18 @@
             <td>{{ fornecedor.endereco }}</td>
             <td>{{ fornecedor.cidade }}</td>
             <td>{{ fornecedor.mensagem }}</td>
+            
+            <td>
+    
+                <a href="{{ url_for('editar_fornecedora', id=fornecedor.id) }}" class="btn btn-warning btn-sm">Editar</a>
+                <a href="{{ url_for('vizualizar_fornecedora', id=fornecedor.id) }}" class="btn btn-info btn-sm">Detalhes</a>
+                <a href="{{ url_for('deletar_fornecedora', id=fornecedor.id) }}" class="btn btn-info btn-sm">Deletar</a>
+
+            </td>
+            
+        
         </tr>
+
         {% else %}
         <tr>
             <td colspan="8">Nenhum fornecedor encontrado.</td>
@@ -44,4 +58,5 @@
         {% endfor %}
     </tbody>
 </table>
+
 {% endblock %}

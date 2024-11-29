@@ -225,14 +225,15 @@ def editar_fornecedora(id):
         return redirect(url_for('fornecedora_lista'))  # Redireciona para a lista de estoque se o fornecedora não for encontrado
 
     if request.method == 'POST':
+        # Atualiza os dados da fornecedora
         fornecedora.nome = request.form.get('nome', fornecedora.nome)
         fornecedora.telefone = request.form.get('telefone', fornecedora.telefone)
         fornecedora.email = request.form.get('email', fornecedora.email)
-        fornecedora.ramo= request.form.get('ramo', fornecedora.ramo)
-        fornecedora. cnpj = request.form.get(' cnpj', fornecedora. cnpj)
-        fornecedora. endereco = request.form.get(' endereco', fornecedora. endereco)
+        fornecedora.ramo = request.form.get('ramo', fornecedora.ramo)
+        fornecedora.cnpj = request.form.get('cnpj', fornecedora.cnpj)  # Removido espaço desnecessário
+        fornecedora.endereco = request.form.get('endereco', fornecedora.endereco)  # Corrigido espaço
         fornecedora.cidade = request.form.get('cidade', fornecedora.cidade)
-        fornecedora.mensage = request.form.get('mensage', fornecedora.mensage)
+        fornecedora.mensagem = request.form.get('mensagem', fornecedora.mensagem) 
     
 
         db.session.commit()
@@ -240,9 +241,9 @@ def editar_fornecedora(id):
         return redirect(url_for('fornecedora_lista'))  # Redireciona para a lista de produtos após salvar
 
    
-    return render_template('editar_fornecedora.html' )
+    return render_template('editar_fornecedora.html' ,obj=fornecedora)
 #vizualizar
-@app.route('fornecedora/<int:id>/detalhes/', methods=["GET"])
+
 @app.route('/fornecedora/<int:id>/detalhes/', methods=["GET"])
 def vizualizar_fornecedora(id):
     fornecedora = Fornecedora.query.get(id)

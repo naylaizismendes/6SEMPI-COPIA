@@ -9,10 +9,10 @@
   <p><strong>email:</strong> {{ fornecedora.email }}</p>
   <p><strong>ramo:</strong> {{ fornecedora.ramo }}</p>
   <p><strong>cnpj:</strong> {{ fornecedora.cnpj }}</p>
-  <p><strong> endereco:</strong> {{ fornecedora. endereco }}</p>
+  <p><strong> endereco:</strong> {{ fornecedora.endereco }}</p>
   <p><strong>cidade:</strong> {{ fornecedora.cidade }}</p>
   <p><strong>mensagem:</strong> {{ fornecedora.mensagem }}</p>
-  <a href="{{ url_for('editar_fornecedora', id=produto.id) }}" class="btn btn-primary">Editar</a>
+  <a href="{{ url_for('editar_fornecedora', id=fornecedora.id) }}" class="btn btn-primary">Editar</a>
   
 </div>
 

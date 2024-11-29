@@ -18,3 +18,16 @@ in my pc:
 
 - instale flask main ( habilitar serviço de email)
 pip install Flask-Mail
+#GRAFICOS
+pip install collectionpy
+#validação do email
+pip install email-validator
+
+referêncial bibliogrÂfico :
+https://pypi.org/project/Flask-Charts/1.5/
+https://www.digitalocean.com/community/tutorials/
+
+
+how-to-add-authentication-to-your-app-with-flask-login-pt
+
+

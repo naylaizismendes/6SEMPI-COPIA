@@ -4,7 +4,8 @@ from app.models import Produto,User,Fornecedora
 from app.forms import ProdutoForm,UserForm,LoginForm,DeleteForm,FornecedoraForm,ContatoFornecedoraForm
 from datetime import datetime 
 from flask_mail import Mail,Message
-from flask_login import login_user, logout_user,current_user #verificaçao de usuario acesso , logout ,verificar no sistema
+from collectionpy.chart.apexcharts import Chart,CND_SRC # gráficos 
+from flask_login import login_user, logout_user,current_user, login_required#verificaçao de usuario acesso , logout ,verificar no sistema
 # Homepage
 @app.route('/',methods=['GET','POST'])
 def homepage():
@@ -12,6 +13,12 @@ def homepage():
 
     print(current_user.is_authenticated)
 
+    X=['A','B','C']
+    Y=[
+       [ 10,20,30],
+    [15,18,32]
+    ]
+    y_label=['orçado','realizado']
     #vizualizar
     return render_template('index.html',form=form)
  
@@ -27,6 +34,7 @@ def cadastro():
 
 #rota para sair do user 
 @app.route('/sair/')
+@login_required
 def logout():
     logout_user()
     return redirect(url_for('homepage'))
@@ -36,6 +44,7 @@ def logout():
 
 # Rota para cadastrar novos produtos
 @app.route('/produtos/', methods=['GET', 'POST'])
+@login_required
 def cadastrar_novo():
     form = ProdutoForm()
     context = {}
@@ -70,6 +79,7 @@ def cadastrar_novo():
 
 # Rota para listar produtos no estoque
 @app.route('/estoque/lista/')
+@login_required
 def estoque_lista():
     pesquisa = request.args.get('pesquisa', '')
     dados = Produto.query.order_by('nome')
@@ -94,6 +104,7 @@ def estoque_lista():
 
 #editar produtos
 @app.route('/produto/<int:id>/editar/', methods=["GET", "POST"])
+@login_required#permitir açao apos o login
 def editar_produto(id):
     produto = Produto.query.get(id)  # Corrigido: usar a classe Produto com "P" maiúsculo
     
@@ -131,6 +142,7 @@ def editar_produto(id):
 
 #somente vizualizar produto 
 @app.route('/produto/<int:id>/detalhes/', methods=["GET"])
+@login_required #permitir açao apos o login
 def detalhes_vizualizar_produto(id):
     # Busca o produto pelo ID
     produto = Produto.query.get(id)
@@ -141,6 +153,7 @@ def detalhes_vizualizar_produto(id):
 
 #deletar os produtos(deletarproduto)
 @app.route('/produto/<int:id>/delete', methods=['GET', 'POST'])
+@login_required #permitir açao apos o login
 def deletarproduto(id):
     produto = Produto.query.get_or_404(id)
     form = DeleteForm()
@@ -153,6 +166,7 @@ def deletarproduto(id):
     return render_template('delete.html', produto=produto,form=form)
 #aqui estamos adiconando fornecedores 
 @app.route('/fornecedora/cadastrar/novo/', methods=['GET', 'POST'])
+@login_required #permitir açao apos o login
 def fornecedora_nova():
     form = FornecedoraForm()  # Instancia o formulário
 
@@ -191,6 +205,7 @@ def fornecedora_nova():
 
 #aqui estamos vizualizando fornecedores 
 @app.route('/fornecedora/lista/')
+@login_required #permitir açao apos o login
 def fornecedora_lista():
     pesquisa = request.args.get('pesquisa', '')
     dados = Fornecedora.query.order_by('nome')
@@ -217,6 +232,7 @@ def fornecedora_lista():
 #crud 
 #editar 
 @app.route('/fornecedora/<int:id>/editar/', methods=["GET", "POST"])
+@login_required#permitir açao apos o login
 def editar_fornecedora(id):
     fornecedora = Fornecedora.query.get(id)  # Corrigido: usar a classe fornecedora com "P" maiúsculo
     
@@ -245,6 +261,7 @@ def editar_fornecedora(id):
 #vizualizar
 
 @app.route('/fornecedora/<int:id>/detalhes/', methods=["GET"])
+@login_required#permitir açao apos o login
 def vizualizar_fornecedora(id):
     fornecedora = Fornecedora.query.get(id)
     if not fornecedora:
@@ -256,6 +273,7 @@ def vizualizar_fornecedora(id):
 
 #deletar
 @app.route('/fornecedora/<int:id>/delete', methods=['GET', 'POST'])
+@login_required #permitir açao apos o login
 def deletar_fornecedora(id):
     fornecedora = Fornecedora.query.get_or_404(id)
     form = DeleteForm()
@@ -268,39 +286,50 @@ def deletar_fornecedora(id):
 
     return render_template('deletar_fornecedora.html')
 #aqui estamos enviando email  a fornecedora solicitando produto 
-@app.route('/solicitar_compra/<int:id>',methods=['POST'])
+@app.route('/solicitar_compra/<int:id>', methods=['GET', 'POST'])
+@login_required #permitir açao apos o login
 def solicitar_compra(id):
-    form = FornecedoraForm()
-    if request.method == 'POST':
-        # Criando a instância do formulário
-        fornecedora =FornecedoraForm(
-            nome=request.form.get("nome"),
-            telefone=request.form.get("telefone"),
-            email=request.form.get("email"),
-            mensagem=request.form.get("mensagem")
-        )
+    fornecedor = Fornecedora.query.get_or_404(id)  # Busca o fornecedor pelo ID
+    form = FornecedoraForm()  # Instancia o formulário
+
+    if form.validate_on_submit():  # Valida os dados submetidos via POST
+        # Extrai os dados do formulário
+        nome = form.nome.data
+        email = form.email.data
+        mensagem = form.mensagem.data
+        telefone = form.telefone.data
+
+        # Criação do e-mail
         msg = Message(
-            subject=f"{fornecedora.nome} enviou uma solicitação de compra",
-            sender=app.config.get('MAIL_USERNAME'),  # Remetente configurado no Flask-Mail
-            recipients=['naylaizismendesferreira1234@gmail.com',app.config('MAIL_USERNAME')],  # Destinatário: e-mail da fornecedora
-            body=f''' 
-            Olá {fornecedora.nome},
+            subject=f"Solicitação de Compra - {nome}",
+            sender=app.config['MAIL_USERNAME'],  # Remetente configurado no Flask-Mail
+            recipients=['naylaizismendesferreira1234@gmail.com',app.config.ger['MAIL_USERNAME']],  # Destinatário(s)
+            body=f'''
+            Olá {nome},
 
             Mensagem:
-            {fornecedora.mensagem}
+            {mensagem}
 
             Contato:
-            Nome: {fornecedora.nome}
-            Telefone: {fornecedora.telefone}
-            E-mail: {fornecedora.email}
+            Nome: {nome}
+            Telefone: {telefone}
+            E-mail: {email}
 
             Atenciosamente,
             Sistema de Controle de Estoque
             '''
         )
-        mail.send(msg)   
-        flash('Mensagem enviada com sucesso!')
-    return redirect('/')  
+
+        try:
+            mail.send(msg)  # Envia o e-mail
+            flash('Mensagem enviada com sucesso!', 'success')
+        except Exception as e:
+            flash(f'Erro ao enviar e-mail: {str(e)}', 'error')
+    else:
+        flash('Erro ao validar os dados. Verifique e tente novamente.', 'error')
+
+    return redirect(url_for('fornecedora_lista'))
+    
         #aqui e a parte de gerar relatorios( .pdf )
 
 #aqui e o home - com gráficos de analise 

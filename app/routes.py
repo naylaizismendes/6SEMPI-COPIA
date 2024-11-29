@@ -2,7 +2,7 @@ from app import app, db
 
 from flask import render_template, url_for, request,redirect,flash
 from app.models import Produto,User,Fornecedora
-from app.forms import ProdutoForm,UserForm,LoginForm,DeleteForm,FornecedoraForm
+from app.forms import ProdutoForm,UserForm,LoginForm,DeleteForm,FornecedoraForm,ContatoFornecedoraForm
 from datetime import datetime 
 from flask_login import login_user, logout_user,current_user #verificaçao de usuario acesso , logout ,verificar no sistema
 # Homepage
@@ -268,8 +268,37 @@ def deletar_fornecedora(id):
 
     return render_template('deletar_fornecedora.html')
 #aqui estamos enviando email  a fornecedora solicitando produto 
+@app.route('/solicitar_compra/<int:id>',methods=['POST'])
+def solicitar_compra(id):
+    Form=ContatoFornecedoraForm
+    fornecedor= Fornecedora.query.get(id)
+    if fornecedor:
+        subject = 'Solicitação de Compra'
+        body = f'''
+        Olá {fornecedor.nome},
 
+        Gostaríamos de solicitar o seguinte produto(s):
+        [Aqui você pode adicionar informações sobre o que está sendo solicitado.]
 
+        Por favor, confirme a disponibilidade e envie as informações sobre o envio.
+
+        Atenciosamente,
+        [Seu Nome ou Empresa]
+        '''
+
+        print(f"Assunto: {subject}")
+        print(f"Corpo: {body}")
+        print(f"Destinatário: {fornecedor.email}")
+
+        # Se você quiser salvar em um arquivo (para depuração ou testes)
+        with open("teste_email.txt", "a") as file:
+            file.write(f"Assunto: {subject}\n")
+            file.write(f"Corpo: {body}\n")
+            file.write(f"Destinatário: {fornecedor.email}\n\n")
+
+        flash('E-mail simulado com sucesso!', 'success')
+
+    return redirect(url_for('fornecedora_lista'))
 #aqui e a parte de gerar relatorios( .pdf )
 
 #aqui e o home - com gráficos de analise 

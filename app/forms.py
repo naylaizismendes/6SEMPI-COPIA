@@ -6,6 +6,15 @@ from app.models import Produto,User,Fornecedora
 from wtforms.validators import DataRequired,Email,ValidationError,EqualTo
 from app import db, bcrypt
 
+
+#class mail
+class ContatoFornecedoraForm(FlaskForm):
+    nome = StringField('Nome', validators=[DataRequired()])
+    telefone = StringField('Telefone', validators=[DataRequired()])
+    email = EmailField('Email', validators=[DataRequired(), Email()])
+    mensagem = StringField('Mensagem', validators=[DataRequired()])
+
+    enviar = SubmitField('Enviar')
 #DeleteForm
 class DeleteForm(FlaskForm):
     confirmar = SubmitField('Deletar')

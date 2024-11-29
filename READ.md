@@ -16,5 +16,5 @@ in my pc:
     - falha de segurança 
     secret key
 
-
-    
+- instale flask main ( habilitar serviço de email)
+pip install Flask-Mail

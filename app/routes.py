@@ -1,9 +1,9 @@
-from app import app, db
-
+from app import app,db,mail
 from flask import render_template, url_for, request,redirect,flash
 from app.models import Produto,User,Fornecedora
 from app.forms import ProdutoForm,UserForm,LoginForm,DeleteForm,FornecedoraForm,ContatoFornecedoraForm
 from datetime import datetime 
+from flask_mail import Mail,Message
 from flask_login import login_user, logout_user,current_user #verificaçao de usuario acesso , logout ,verificar no sistema
 # Homepage
 @app.route('/',methods=['GET','POST'])
@@ -270,36 +270,38 @@ def deletar_fornecedora(id):
 #aqui estamos enviando email  a fornecedora solicitando produto 
 @app.route('/solicitar_compra/<int:id>',methods=['POST'])
 def solicitar_compra(id):
-    Form=ContatoFornecedoraForm
-    fornecedor= Fornecedora.query.get(id)
-    if fornecedor:
-        subject = 'Solicitação de Compra'
-        body = f'''
-        Olá {fornecedor.nome},
+    form = FornecedoraForm()
+    if request.method == 'POST':
+        # Criando a instância do formulário
+        fornecedora =FornecedoraForm(
+            nome=request.form.get("nome"),
+            telefone=request.form.get("telefone"),
+            email=request.form.get("email"),
+            mensagem=request.form.get("mensagem")
+        )
+        msg = Message(
+            subject=f"{fornecedora.nome} enviou uma solicitação de compra",
+            sender=app.config.get('MAIL_USERNAME'),  # Remetente configurado no Flask-Mail
+            recipients=['naylaizismendesferreira1234@gmail.com',app.config('MAIL_USERNAME')],  # Destinatário: e-mail da fornecedora
+            body=f''' 
+            Olá {fornecedora.nome},
 
-        Gostaríamos de solicitar o seguinte produto(s):
-        [Aqui você pode adicionar informações sobre o que está sendo solicitado.]
+            Mensagem:
+            {fornecedora.mensagem}
 
-        Por favor, confirme a disponibilidade e envie as informações sobre o envio.
+            Contato:
+            Nome: {fornecedora.nome}
+            Telefone: {fornecedora.telefone}
+            E-mail: {fornecedora.email}
 
-        Atenciosamente,
-        [Seu Nome ou Empresa]
-        '''
-
-        print(f"Assunto: {subject}")
-        print(f"Corpo: {body}")
-        print(f"Destinatário: {fornecedor.email}")
-
-        # Se você quiser salvar em um arquivo (para depuração ou testes)
-        with open("teste_email.txt", "a") as file:
-            file.write(f"Assunto: {subject}\n")
-            file.write(f"Corpo: {body}\n")
-            file.write(f"Destinatário: {fornecedor.email}\n\n")
-
-        flash('E-mail simulado com sucesso!', 'success')
-
-    return redirect(url_for('fornecedora_lista'))
-#aqui e a parte de gerar relatorios( .pdf )
+            Atenciosamente,
+            Sistema de Controle de Estoque
+            '''
+        )
+        mail.send(msg)   
+        flash('Mensagem enviada com sucesso!')
+    return redirect('/')  
+        #aqui e a parte de gerar relatorios( .pdf )
 
 #aqui e o home - com gráficos de analise 
 

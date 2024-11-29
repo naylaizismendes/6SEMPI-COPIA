@@ -24,23 +24,23 @@ app.config['UPLOAD_FILES'] = r'static/data'
 #DEFINIR A VARIAVEL DO BANCO DE DADOS
 #variaveis para autenticação (Login e logout )
 db = SQLAlchemy(app)
-mail=Mail()
 
 migrate = Migrate(app, db)
 login_manager = LoginManager(app)  # Renomeado para `login_manager`
 login_manager.login_view = 'login'
 bcrypt = Bcrypt(app)
 #configurando o email
-def create_app():
-    app=Flask(__name__)
-    app.config['MAIL_SERVER'] = 'smtp.gmail.com'
-    app.config['MAIL_PORT'] = 587
-    app.config['MAIL_USE_TLS'] = True
-    app.config['MAIL_USERNAME'] = os.getenv('MAIL_USERNAME')
-    app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD')
 
-    db.init_app(app)
-    mail.init_app(app)
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = os.getenv('MAIL_USERNAME')
+app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD')
+mail=Mail(app)
+
+
+db.init_app(app)
+    
 #rotas 
 from app.routes import homepage 
 from app.routes import cadastrar_novo

@@ -319,17 +319,9 @@ def solicitar_compra(id):
             Sistema de Controle de Estoque
             '''
         )
-
-        try:
-            mail.send(msg)  # Envia o e-mail
-            flash('Mensagem enviada com sucesso!', 'success')
-        except Exception as e:
-            flash(f'Erro ao enviar e-mail: {str(e)}', 'error')
-    else:
-        flash('Erro ao validar os dados. Verifique e tente novamente.', 'error')
-
-    return redirect(url_for('fornecedora_lista'))
-    
+        mail.send(msg)   
+        flash('Mensagem enviada com sucesso!')
+    return redirect('/')  
         #aqui e a parte de gerar relatorios( .pdf )
 
 #aqui e o home - com gráficos de analise 

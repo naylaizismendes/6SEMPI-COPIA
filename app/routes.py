@@ -13,15 +13,14 @@ def homepage():
 
     print(current_user.is_authenticated)
 
-    X=['A','B','C']
-    Y=[
-       [ 10,20,30],
-    [15,18,32]
-    ]
-    y_label=['orçado','realizado']
     #vizualizar
     return render_template('index.html',form=form)
- 
+@app.route('/grafico')
+def grafico():
+    # Dados do gráfico
+    labels = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio']
+    values = [100, 200, 300, 400, 500]
+    return render_template('grafico.html', labels=labels, values=values)
  #cadastrar usuario 
 @app.route('/cadastrando_usuario/',methods=['GET','POST'])
 def cadastro():
@@ -76,8 +75,9 @@ def cadastrar_novo():
         return redirect(url_for('estoque_lista'))
 
     return render_template('produto.html', context=context, form=form)
+  # Supondo que você tenha um modelo Produto
 
-# Rota para listar produtos no estoque
+
 @app.route('/estoque/lista/')
 @login_required
 def estoque_lista():
@@ -99,44 +99,51 @@ def estoque_lista():
    #vizualizar
     return render_template('estoque.html', context=context)
 
+@app.route('/produto/<int:id>/editar', methods=['GET', 'POST'])
+def editar_produto(id):
+    # Obter o produto do banco de dados pelo ID
+    produto = Produto.query.get_or_404(id)
+    if request.method == 'POST':
+        try:
+            # Atualize os dados do produto com os dados do formulário
+            produto.nome = request.form['nome']
+            produto.quantidade = int(request.form['quantidade'])
+            produto.categoria = request.form['categoria']
+            produto.fornecedor = request.form.get('fornecedor', '').strip()
+            produto.descricao = request.form.get('descricao', '').strip()
+
+            # Converter strings de datas para objetos datetime.date
+            data_de_fabricacao = request.form.get('data_de_fabricacao')
+            if data_de_fabricacao:
+                produto.data_de_fabricacao = datetime.strptime(data_de_fabricacao, '%Y-%m-%d').date()
+            else:
+                produto.data_de_fabricacao = None
+
+            data_de_validade = request.form.get('data_de_validade')
+            if data_de_validade:
+                produto.data_de_validade = datetime.strptime(data_de_validade, '%Y-%m-%d').date()
+            else:
+                produto.data_de_validade = None
+
+            # Salve as alterações no banco
+            db.session.commit()
+            flash('Produto atualizado com sucesso!', 'success')
+            return redirect(url_for('detalhes_vizualizar_produto', id=produto.id))
+        except Exception as e:
+            # Reverter a transação em caso de erro
+            db.session.rollback()
+            flash(f'Erro ao atualizar o produto: {e}', 'danger')
+
+    # Renderizar o template com os dados do produto
+    return render_template('editar_produto.html', produto=produto)
+
+
+
 
 #exiir detalhes e pesquisar produto 
 
 #editar produtos
-@app.route('/produto/<int:id>/editar/', methods=["GET", "POST"])
-@login_required#permitir açao apos o login
-def editar_produto(id):
-    produto = Produto.query.get(id)  # Corrigido: usar a classe Produto com "P" maiúsculo
-    
-    if not produto:
-        flash('Produto não encontrado!', 'error')
-        return redirect(url_for('estoque_lista'))  # Redireciona para a lista de estoque se o produto não for encontrado
 
-    if request.method == 'POST':
-        produto.nome = request.form.get('nome', produto.nome)
-        produto.quantidade = request.form.get('quantidade', produto.quantidade)
-        produto.categoria = request.form.get('categoria', produto.categoria)
-        produto.fornecedor= request.form.get('fornecedor', produto.fornecedor)
-        produto.descricao = request.form.get('descricao', produto.descricao)
-        produto.data_de_fabricacao = request.form.get('data_de_fabricacao', produto.data_de_fabricacao)
-        produto.data_de_validade = request.form.get('data_de_validade', produto.data_de_validade)
-
-
-          # Convertendo strings de data para objetos datetime
-        data_de_fabricacao_str = request.form.get('data_de_fabricacao' )
-        data_de_validade_str = request.form.get('data_de_validade' )
-
-        if data_de_fabricacao_str:
-            produto.data_de_fabricacao = datetime.strptime(data_de_fabricacao_str, '%Y-%m-%d').date()
-        
-        if data_de_validade_str:
-            produto.data_de_validade = datetime.strptime(data_de_validade_str, '%Y-%m-%d').date()
-
-        db.session.commit()
-        flash('Produto atualizado com sucesso!', 'success')
-        return redirect(url_for('estoque_lista'))  # Redireciona para a lista de produtos após salvar
-
-    return render_template('editar_produto.html', produto=produto)
 
 
 
@@ -165,6 +172,7 @@ def deletarproduto(id):
    #vizualizar
     return render_template('delete.html', produto=produto,form=form)
 #aqui estamos adiconando fornecedores 
+
 @app.route('/fornecedora/cadastrar/novo/', methods=['GET', 'POST'])
 @login_required #permitir açao apos o login
 def fornecedora_nova():
@@ -202,7 +210,6 @@ def fornecedora_nova():
 
     # Renderiza o formulário para cadastro
     return render_template('fornecedora_nova.html', form=form, produto=produto)
-
 #aqui estamos vizualizando fornecedores 
 @app.route('/fornecedora/lista/')
 @login_required #permitir açao apos o login
@@ -229,8 +236,8 @@ def fornecedora_lista():
     return render_template('fornecedores.html', pesquisa=pesquisa, fornecedores=dados)
 
 
+
 #crud 
-#editar 
 @app.route('/fornecedora/<int:id>/editar/', methods=["GET", "POST"])
 @login_required#permitir açao apos o login
 def editar_fornecedora(id):
@@ -257,7 +264,8 @@ def editar_fornecedora(id):
         return redirect(url_for('fornecedora_lista'))  # Redireciona para a lista de produtos após salvar
 
    
-    return render_template('editar_fornecedora.html' ,obj=fornecedora)
+    return render_template('editar_fornecedor.html', obj=fornecedora)
+
 #vizualizar
 
 @app.route('/fornecedora/<int:id>/detalhes/', methods=["GET"])

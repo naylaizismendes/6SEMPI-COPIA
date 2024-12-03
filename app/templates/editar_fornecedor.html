@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    {% include 'nav.html' %}
+
+    <h2>Editar Fornecedor</h2>
+    <form method="POST" action="{{ url_for('editar_fornecedora', id=obj.id) }}">
+
+        <div class="row">
+
+            <div class="col-md-6">
+                Nome:
+                <input type="text" name="nome" value="{{ obj.nome }}" class="form-control" required>
+            </div>
+
+            <div class="col-md-6">
+                Telefone:
+                <input type="text" name="telefone" value="{{ obj.telefone }}" class="form-control" required>
+            </div>
+
+            <div class="col-md-6">
+                Email:
+                <input type="email" name="email" value="{{ obj.email }}" class="form-control" required>
+            </div>
+
+            <div class="col-md-6">
+                Ramo:
+                <input type="text" name="ramo" value="{{ obj.ramo }}" class="form-control" required>
+            </div>
+
+            <div class="col-md-6">
+                CNPJ:
+                <input type="text" name="cnpj" value="{{ obj.cnpj }}" class="form-control" required>
+            </div>
+
+            <div class="col-12 mt-4">
+                Endereço:
+                <input type="text" name="endereco" value="{{ obj.endereco }}" class="form-control" required>
+            </div>
+
+            <div class="col-12 mt-4">
+                Cidade:
+                <input type="text" name="cidade" value="{{ obj.cidade }}" class="form-control" required>
+            </div>
+
+            <div class="col-12 mt-4">
+                Mensagem:
+                <textarea name="mensagem" class="form-control" rows="4">{{ obj.mensagem }}</textarea>
+            </div>
+
+            <div class="col-12 mt-4">
+                <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+                <a href="{{ url_for('fornecedora_lista') }}" class="btn btn-secondary">Cancelar</a>
+            </div>
+
+        </div>
+    </form>
+</div>
+{% endblock %}

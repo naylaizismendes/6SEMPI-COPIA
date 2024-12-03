@@ -56,7 +56,7 @@ from app.routes import editar_fornecedora
 from app.routes import vizualizar_fornecedora
 from app.routes import deletar_fornecedora
 from app.routes import solicitar_compra
-
+from app.routes import grafico 
 # tela principal(MENU) 
 from app.models import Produto
 from app.models import User

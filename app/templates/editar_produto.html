@@ -5,18 +5,43 @@
   {% include 'nav.html' %}
   <h2>Editar Produto</h2>
   <form method="POST">
-    <input type="text" name="nome" value="{{ produto.nome }}" placeholder="Nome" required>
-    <input type="number" name="quantidade" value="{{ produto.quantidade }}" placeholder="Quantidade" required>
-    <input type="text" name="categoria" value="{{ produto.categoria }}" placeholder="Categoria" required>
-    <input type="text" name="fornecedor" value="{{ produto.fornecedor }}" placeholder="Fornecedor">
-    <textarea name="descricao" placeholder="Descrição">{{ produto.descricao }}</textarea>
-    <input type="date" name="data_de_fabricacao" value="{{ produto.data_de_fabricacao.strftime('%Y-%m-%d') }}">
-    <input type="date" name="data_de_validade" value="{{ produto.data_de_validade.strftime('%Y-%m-%d') }}">
+    <!-- Adicione campos do formulário para edição -->
+    <div class="mb-3">
+      <label for="nome" class="form-label">Nome</label>
+      <input type="text" id="nome" name="nome" class="form-control" placeholder="Nome do Produto" value="{{ produto.nome }}" required>
+    </div>
+    <div class="mb-3">
+      <label for="quantidade" class="form-label">Quantidade</label>
+      <input type="number" id="quantidade" name="quantidade" class="form-control" placeholder="Quantidade" value="{{ produto.quantidade }}" required>
+    </div>
+    <div class="mb-3">
+      <label for="categoria" class="form-label">Categoria</label>
+      <input type="text" id="categoria" name="categoria" class="form-control" placeholder="Categoria" value="{{ produto.categoria }}" required>
+    </div>
+    <div class="mb-3">
+      <label for="fornecedor" class="form-label">Fornecedor</label>
+      <input type="text" id="fornecedor" name="fornecedor" class="form-control" placeholder="Fornecedor" value="{{ produto.fornecedor or '' }}">
+    </div>
+    <div class="mb-3">
+      <label for="descricao" class="form-label">Descrição</label>
+      <textarea id="descricao" name="descricao" class="form-control" placeholder="Descrição do Produto">{{ produto.descricao or '' }}</textarea>
+    </div>
+    <div class="mb-3">
+      <label for="data_de_fabricacao" class="form-label">Data de Fabricação</label>
+      <input type="date" id="data_de_fabricacao" name="data_de_fabricacao" class="form-control" 
+             value="{{ produto.data_de_fabricacao.strftime('%Y-%m-%d') if produto.data_de_fabricacao else '' }}">
+    </div>
+    <div class="mb-3">
+      <label for="data_de_validade" class="form-label">Data de Validade</label>
+      <input type="date" id="data_de_validade" name="data_de_validade" class="form-control" 
+             value="{{ produto.data_de_validade.strftime('%Y-%m-%d') if produto.data_de_validade else '' }}">
+    </div>
     <button type="submit" class="btn btn-primary">Atualizar</button>
-    <a href="{{ url_for('detalhes_produto', id=produto.id) }}" class="btn btn-secondary">Cancelar</a>
+    <a href="{{ url_for('estoque_lista') }}" class="btn btn-secondary">Cancelar</a>
   </form>
 </div>
 
 {% endblock %}
+
 
 
